@@ -66,6 +66,21 @@ app.use("/signup",async (req,res)=>{
         res.json({status:"Success"})
     })
 
+    app.post("/create",async(req,res)=>{
+        let input=req.body
+        let token=req.headers.token
+        jwt.verify(token,"blog-app",async (error,decoded)=>{
+            if (decoded && decoded.email) {
+               
+                let result=new postmodel(input)
+                await result.save()
+    
+            } else {
+                res.json({"status":"invalid Authentication"})
+            }
+        })
+    })
+
 app.listen(8080,()=>{
     console.log("server started")
 })
