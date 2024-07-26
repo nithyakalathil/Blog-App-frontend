@@ -54,6 +54,18 @@ jwt.sign({email:input.email},"blog-app",{expiresIn:"1d"},
     ).catch()
 })
 
+app.use("/signup",async (req,res)=>{
+    let input=req.body
+    let hasedpassword=await generateHashedPassword(input.password)
+    console.log(hasedpassword)
+    input.password=hasedpassword
+    console.log(input)
+
+    let users = new usermodel(input)
+    users.save()
+        res.json({status:"Success"})
+    })
+
 app.listen(8080,()=>{
     console.log("server started")
 })
